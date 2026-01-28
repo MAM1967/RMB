@@ -1,0 +1,359 @@
+company_name, domain, sector, estimated_size
+company_name,domain,sector,estimated_size
+JPMorgan Chase,jpmorgan.com,Banking,Large
+Bank of America,bankofamerica.com,Banking,Large
+Wells Fargo,wellsfargo.com,Banking,Large
+Citigroup,citi.com,Banking,Large
+Goldman Sachs,goldmansachs.com,Banking,Large
+Morgan Stanley,morganstanley.com,Banking,Large
+US Bancorp,usbank.com,Banking,Large
+PNC Financial,pnc.com,Banking,Large
+Truist,truist.com,Banking,Large
+Capital One,capitalone.com,Banking,Large
+Charles Schwab,schwab.com,Banking,Large
+TD Bank,td.com,Banking,Large
+BMO Harris,bmo.com,Banking,Large
+Fifth Third,53.com,Banking,Large
+KeyBank,key.com,Banking,Large
+Regions Financial,regions.com,Banking,Large
+M&T Bank,mtb.com,Banking,Large
+Huntington Bancshares,huntington.com,Banking,Large
+Citizens Financial,citizensbank.com,Banking,Large
+Ally Financial,ally.com,Banking,Large
+Discover,discover.com,Banking,Large
+American Express,americanexpress.com,Banking,Large
+Synchrony Financial,synchrony.com,Banking,Large
+State Farm,statefarm.com,Insurance,Large
+Allstate,allstate.com,Insurance,Large
+Progressive,progressive.com,Insurance,Large
+Geico,geico.com,Insurance,Large
+Liberty Mutual,libertymutual.com,Insurance,Large
+Travelers,travelers.com,Insurance,Large
+Chubb,chubb.com,Insurance,Large
+MetLife,metlife.com,Insurance,Large
+Prudential,prudential.com,Insurance,Large
+Northwestern Mutual,northwesternmutual.com,Insurance,Large
+New York Life,newyorklife.com,Insurance,Large
+MassMutual,massmutual.com,Insurance,Large
+Principal Financial,principal.com,Insurance,Large
+Lincoln Financial,lfg.com,Insurance,Large
+Aflac,aflac.com,Insurance,Large
+BlackRock,blackrock.com,Asset Management,Large
+Vanguard,vanguard.com,Asset Management,Large
+Fidelity,fidelity.com,Asset Management,Large
+T. Rowe Price,troweprice.com,Asset Management,Large
+State Street,statestreet.com,Asset Management,Large
+BNY Mellon,bnymellon.com,Asset Management,Large
+Stripe,stripe.com,Fintech,Growth
+Plaid,plaid.com,Fintech,Growth
+Brex,brex.com,Fintech,Growth
+Ramp,ramp.com,Fintech,Growth
+Mercury,mercury.com,Fintech,Growth
+Rippling,rippling.com,Fintech,Growth
+Gusto,gusto.com,Fintech,Growth
+Carta,carta.com,Fintech,Growth
+Robinhood,robinhood.com,Fintech,Growth
+Coinbase,coinbase.com,Fintech,Growth
+Chime,chime.com,Fintech,Growth
+SoFi,sofi.com,Fintech,Growth
+Affirm,affirm.com,Fintech,Growth
+Klarna,klarna.com,Fintech,Growth
+PayPal,paypal.com,Fintech,Large
+Square,squareup.com,Fintech,Large
+UnitedHealth Group,unitedhealthgroup.com,Healthcare,Large
+CVS Health,cvshealth.com,Healthcare,Large
+Elevance Health,elevancehealth.com,Healthcare,Large
+Cigna,cigna.com,Healthcare,Large
+Humana,humana.com,Healthcare,Large
+Centene,centene.com,Healthcare,Large
+Kaiser Permanente,kaiserpermanente.org,Healthcare,Large
+HCA Healthcare,hcahealthcare.com,Healthcare,Large
+CommonSpirit Health,commonspirit.org,Healthcare,Large
+Ascension,ascension.org,Healthcare,Large
+Trinity Health,trinity-health.org,Healthcare,Large
+Providence,providence.org,Healthcare,Large
+Mayo Clinic,mayo.edu,Healthcare,Large
+Cleveland Clinic,clevelandclinic.org,Healthcare,Large
+Johns Hopkins,hopkinsmedicine.org,Healthcare,Large
+Pfizer,pfizer.com,Pharma,Large
+Johnson & Johnson,jnj.com,Pharma,Large
+Merck,merck.com,Pharma,Large
+AbbVie,abbvie.com,Pharma,Large
+Eli Lilly,lilly.com,Pharma,Large
+Bristol Myers Squibb,bms.com,Pharma,Large
+Amgen,amgen.com,Pharma,Large
+Gilead,gilead.com,Pharma,Large
+Moderna,modernatx.com,Pharma,Large
+Regeneron,regeneron.com,Pharma,Large
+Biogen,biogen.com,Pharma,Large
+Medtronic,medtronic.com,Medical Devices,Large
+Abbott Labs,abbott.com,Medical Devices,Large
+Boston Scientific,bostonscientific.com,Medical Devices,Large
+Stryker,stryker.com,Medical Devices,Large
+Intuitive Surgical,intuitive.com,Medical Devices,Large
+Thermo Fisher,thermofisher.com,Life Sciences,Large
+Danaher,danaher.com,Life Sciences,Large
+Illumina,illumina.com,Life Sciences,Large
+General Electric,ge.com,Manufacturing,Large
+3M,3m.com,Manufacturing,Large
+Honeywell,honeywell.com,Manufacturing,Large
+Caterpillar,caterpillar.com,Manufacturing,Large
+Deere & Company,deere.com,Manufacturing,Large
+Boeing,boeing.com,Aerospace,Large
+Lockheed Martin,lockheedmartin.com,Aerospace,Large
+Raytheon Technologies,rtx.com,Aerospace,Large
+Northrop Grumman,northropgrumman.com,Aerospace,Large
+General Dynamics,gd.com,Aerospace,Large
+General Motors,gm.com,Automotive,Large
+Ford,ford.com,Automotive,Large
+Stellantis,stellantis.com,Automotive,Large
+Tesla,tesla.com,Automotive,Large
+Rivian,rivian.com,Automotive,Growth
+Cummins,cummins.com,Automotive,Large
+Paccar,paccar.com,Automotive,Large
+Eaton,eaton.com,Manufacturing,Large
+Emerson Electric,emerson.com,Manufacturing,Large
+Rockwell Automation,rockwellautomation.com,Manufacturing,Large
+Parker Hannifin,parker.com,Manufacturing,Large
+Illinois Tool Works,itw.com,Manufacturing,Large
+Stanley Black & Decker,stanleyblackanddecker.com,Manufacturing,Large
+Ingersoll Rand,irco.com,Manufacturing,Large
+Dover Corp,dovercorporation.com,Manufacturing,Large
+Goodyear,goodyear.com,Manufacturing,Large
+Corning,corning.com,Manufacturing,Large
+PPG Industries,ppg.com,Manufacturing,Large
+Sherwin-Williams,sherwin-williams.com,Manufacturing,Large
+Dow,dow.com,Chemicals,Large
+DuPont,dupont.com,Chemicals,Large
+Eastman Chemical,eastman.com,Chemicals,Large
+ExxonMobil,exxonmobil.com,Energy,Large
+Chevron,chevron.com,Energy,Large
+ConocoPhillips,conocophillips.com,Energy,Large
+Phillips 66,phillips66.com,Energy,Large
+Valero Energy,valero.com,Energy,Large
+Marathon Petroleum,marathonpetroleum.com,Energy,Large
+Schlumberger,slb.com,Energy,Large
+Halliburton,halliburton.com,Energy,Large
+Baker Hughes,bakerhughes.com,Energy,Large
+NextEra Energy,nexteraenergy.com,Utilities,Large
+Duke Energy,duke-energy.com,Utilities,Large
+Southern Company,southerncompany.com,Utilities,Large
+Dominion Energy,dominionenergy.com,Utilities,Large
+Exelon,exeloncorp.com,Utilities,Large
+American Electric Power,aep.com,Utilities,Large
+Xcel Energy,xcelenergy.com,Utilities,Large
+Public Service Enterprise Group,pseg.com,Utilities,Large
+Edison International,edison.com,Utilities,Large
+Sempra Energy,sempra.com,Utilities,Large
+Consolidated Edison,conedison.com,Utilities,Large
+Walmart,walmart.com,Retail,Large
+Target,target.com,Retail,Large
+Costco,costco.com,Retail,Large
+Home Depot,homedepot.com,Retail,Large
+Lowe's,lowes.com,Retail,Large
+Kroger,thekrogerco.com,Retail,Large
+Albertsons,albertsons.com,Retail,Large
+Publix,publix.com,Retail,Large
+Wegmans,wegmans.com,Retail,Large
+Dollar General,dollargeneral.com,Retail,Large
+Dollar Tree,dollartree.com,Retail,Large
+TJX Companies,tjx.com,Retail,Large
+Ross Stores,rossstores.com,Retail,Large
+Nordstrom,nordstrom.com,Retail,Large
+Macy's,macysinc.com,Retail,Large
+Kohl's,kohls.com,Retail,Large
+Best Buy,bestbuy.com,Retail,Large
+AutoZone,autozone.com,Retail,Large
+O'Reilly Auto Parts,oreillyauto.com,Retail,Large
+CarMax,carmax.com,Retail,Large
+Procter & Gamble,pg.com,Consumer Goods,Large
+Colgate-Palmolive,colgatepalmolive.com,Consumer Goods,Large
+Kimberly-Clark,kimberly-clark.com,Consumer Goods,Large
+Clorox,thecloroxcompany.com,Consumer Goods,Large
+PepsiCo,pepsico.com,Food & Beverage,Large
+Coca-Cola,coca-colacompany.com,Food & Beverage,Large
+Mondelez,mondelezinternational.com,Food & Beverage,Large
+Kraft Heinz,kraftheinzcompany.com,Food & Beverage,Large
+General Mills,generalmills.com,Food & Beverage,Large
+Kellogg's,kellanova.com,Food & Beverage,Large
+Conagra,conagrabrands.com,Food & Beverage,Large
+Hormel,hormelfoods.com,Food & Beverage,Large
+Tyson Foods,tysonfoods.com,Food & Beverage,Large
+Cargill,cargill.com,Agriculture,Large
+Archer Daniels Midland,adm.com,Agriculture,Large
+McDonald's,mcdonalds.com,Food Service,Large
+Starbucks,starbucks.com,Food Service,Large
+Yum! Brands,yum.com,Food Service,Large
+Chipotle,chipotle.com,Food Service,Large
+Domino's,dominos.com,Food Service,Large
+Wendy's,wendys.com,Food Service,Large
+Chick-fil-A,chick-fil-a.com,Food Service,Large
+FedEx,fedex.com,Logistics,Large
+UPS,ups.com,Logistics,Large
+XPO Logistics,xpo.com,Logistics,Large
+J.B. Hunt,jbhunt.com,Logistics,Large
+Knight-Swift,knight-swift.com,Logistics,Large
+Schneider National,schneider.com,Logistics,Large
+Old Dominion Freight,odfl.com,Logistics,Large
+Ryder,ryder.com,Logistics,Large
+Penske,penske.com,Logistics,Large
+Union Pacific,up.com,Rail,Large
+BNSF Railway,bnsf.com,Rail,Large
+CSX,csx.com,Rail,Large
+Norfolk Southern,nscorp.com,Rail,Large
+Delta Air Lines,delta.com,Airlines,Large
+American Airlines,aa.com,Airlines,Large
+United Airlines,united.com,Airlines,Large
+Southwest Airlines,southwest.com,Airlines,Large
+Alaska Airlines,alaskaair.com,Airlines,Large
+JetBlue,jetblue.com,Airlines,Large
+Marriott International,marriott.com,Hospitality,Large
+Hilton Worldwide,hilton.com,Hospitality,Large
+Hyatt Hotels,hyatt.com,Hospitality,Large
+IHG,ihg.com,Hospitality,Large
+Wyndham Hotels,wyndhamhotels.com,Hospitality,Large
+Choice Hotels,choicehotels.com,Hospitality,Large
+MGM Resorts,mgmresorts.com,Hospitality,Large
+Caesars Entertainment,caesars.com,Hospitality,Large
+Enterprise Holdings,enterprise.com,Rental,Large
+Hertz,hertz.com,Rental,Large
+AT&T,att.com,Telecom,Large
+Verizon,verizon.com,Telecom,Large
+T-Mobile,t-mobile.com,Telecom,Large
+Comcast,comcast.com,Telecom,Large
+Charter Communications,charter.com,Telecom,Large
+Cox Communications,cox.com,Telecom,Large
+Disney,thewaltdisneycompany.com,Media,Large
+Comcast NBCUniversal,nbcuniversal.com,Media,Large
+Paramount Global,paramount.com,Media,Large
+Warner Bros Discovery,wbd.com,Media,Large
+Fox Corporation,foxcorporation.com,Media,Large
+Netflix,netflix.com,Media,Large
+CBRE,cbre.com,Real Estate,Large
+JLL,jll.com,Real Estate,Large
+Cushman & Wakefield,cushmanwakefield.com,Real Estate,Large
+Lennar,lennar.com,Construction,Large
+D.R. Horton,drhorton.com,Construction,Large
+PulteGroup,pultegroup.com,Construction,Large
+KB Home,kbhome.com,Construction,Large
+Toll Brothers,tollbrothers.com,Construction,Large
+Bechtel,bechtel.com,Construction,Large
+Fluor,fluor.com,Construction,Large
+AECOM,aecom.com,Construction,Large
+Deloitte,deloitte.com,Professional Services,Large
+PwC,pwc.com,Professional Services,Large
+EY,ey.com,Professional Services,Large
+KPMG,kpmg.com,Professional Services,Large
+Accenture,accenture.com,Professional Services,Large
+McKinsey & Company,mckinsey.com,Consulting,Large
+Boston Consulting Group,bcg.com,Consulting,Large
+Bain & Company,bain.com,Consulting,Large
+Booz Allen Hamilton,boozallen.com,Consulting,Large
+Capgemini,capgemini.com,IT Services,Large
+Cognizant,cognizant.com,IT Services,Large
+Apple,apple.com,Tech,Large
+Microsoft,microsoft.com,Tech,Large
+Google,google.com,Tech,Large
+Amazon,amazon.com,Tech,Large
+Meta,meta.com,Tech,Large
+Netflix,netflix.com,Tech,Large
+Adobe,adobe.com,Tech,Large
+Salesforce,salesforce.com,Tech,Large
+Oracle,oracle.com,Tech,Large
+IBM,ibm.com,Tech,Large
+Intel,intel.com,Tech,Large
+AMD,amd.com,Tech,Large
+Nvidia,nvidia.com,Tech,Large
+Qualcomm,qualcomm.com,Tech,Large
+Cisco,cisco.com,Tech,Large
+Dell Technologies,dell.com,Tech,Large
+ServiceNow,servicenow.com,Tech,Large
+Workday,workday.com,Tech,Large
+Snowflake,snowflake.com,Tech,Growth
+Databricks,databricks.com,Tech,Growth
+MongoDB,mongodb.com,Tech,Growth
+GitLab,gitlab.com,Tech,Growth
+Atlassian,atlassian.com,Tech,Large
+Zoom,zoom.us,Tech,Large
+DocuSign,docusign.com,Tech,Large
+Twilio,twilio.com,Tech,Large
+Datadog,datadoghq.com,Tech,Large
+Okta,okta.com,Tech,Large
+Shopify,shopify.com,Tech,Large
+Square,squareup.com,Tech,Large
+Intuit,intuit.com,Tech,Large
+Palo Alto Networks,paloaltonetworks.com,Tech,Large
+CrowdStrike,crowdstrike.com,Tech,Large
+Fortinet,fortinet.com,Tech,Large
+Cloudflare,cloudflare.com,Tech,Large
+Figma,figma.com,Tech,Growth
+Canva,canva.com,Tech,Growth
+Notion,notion.so,Tech,Growth
+Airtable,airtable.com,Tech,Growth
+OpenAI,openai.com,Tech,Growth
+Anthropic,anthropic.com,Tech,Growth
+Scale AI,scale.com,Tech,Growth
+Hugging Face,huggingface.co,Tech,Growth
+Retool,retool.com,Tech,Growth
+Zapier,zapier.com,Tech,Growth
+Amplitude,amplitude.com,Tech,Growth
+Segment,segment.com,Tech,Growth
+Greenhouse,greenhouse.io,Tech,Growth
+Lever,lever.co,Tech,Growth
+Lattice,latticeapp.com,Tech,Growth
+Gong,gong.io,Tech,Growth
+Outreach,outreach.io,Tech,Growth
+HubSpot,hubspot.com,Tech,Large
+ZoomInfo,zoominfo.com,Tech,Large
+Toast,toasttab.com,Tech,Growth
+Procore,procore.com,Tech,Growth
+Samsara,samsara.com,Tech,Growth
+Flexport,flexport.com,Tech,Growth
+Convoy,convoy.com,Tech,Growth
+Workato,workato.com,Tech,Growth
+UiPath,uipath.com,Tech,Large
+Automation Anywhere,automationanywhere.com,Tech,Growth
+Blue Prism,blueprism.com,Tech,Growth
+Zapier,zapier.com,Tech,Growth
+Miro,miro.com,Tech,Growth
+Lucid,lucid.co,Tech,Growth
+monday.com,monday.com,Tech,Large
+Asana,asana.com,Tech,Large
+ClickUp,clickup.com,Tech,Growth
+Linear,linear.app,Tech,Growth
+Coda,coda.io,Tech,Growth
+ADP,adp.com,HR Tech,Large
+Paychex,paychex.com,HR Tech,Large
+Paycom,paycom.com,HR Tech,Large
+Paylocity,paylocity.com,HR Tech,Large
+UKG,ukg.com,HR Tech,Large
+Ceridian,ceridian.com,HR Tech,Large
+Justworks,justworks.com,HR Tech,Growth
+TriNet,trinet.com,HR Tech,Large
+Deel,deel.com,HR Tech,Growth
+Remote,remote.com,HR Tech,Growth
+Oyster,oysterhr.com,HR Tech,Growth
+Zillow,zillow.com,Proptech,Large
+Redfin,redfin.com,Proptech,Large
+Opendoor,opendoor.com,Proptech,Large
+Compass,compass.com,Proptech,Large
+Airbnb,airbnb.com,Travel,Large
+Booking.com,booking.com,Travel,Large
+Expedia,expedia.com,Travel,Large
+Vrbo,vrbo.com,Travel,Large
+Epic,epic.com,Healthcare IT,Large
+Cerner,cerner.com,Healthcare IT,Large
+Athenahealth,athenahealth.com,Healthcare IT,Large
+Oscar Health,hioscar.com,Healthcare,Growth
+Ro,ro.co,Healthcare,Growth
+Hims & Hers,forhims.com,Healthcare,Growth
+Spring Health,springhealth.com,Healthcare,Growth
+Lyra Health,lyrahealth.com,Healthcare,Growth
+Modern Health,modernhealth.com,Healthcare,Growth
+Calm,calm.com,Wellness,Growth
+Headspace,headspace.com,Wellness,Growth
+Peloton,onepeloton.com,Fitness,Large
+Tonal,tonal.com,Fitness,Growth
+Mirror,mirror.co,Fitness,Growth
+Noom,noom.com,Wellness,Growth
+WeightWatchers,ww.com,Wellness,Large

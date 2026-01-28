@@ -1,0 +1,39 @@
+ # Python
+ __pycache__/
+ *.py[cod]
+ *.pyo
+ *.pyd
+ .Python
+ env/
+ venv/
+ .venv/
+ .mypy_cache/
+ .pytest_cache/
+ .ruff_cache/
+
+ # Poetry
+ poetry.lock
+
+ # Node / Frontend
+ node_modules/
+ .next/
+ .turbo/
+ dist/
+ build/
+
+ # Environment
+ .env
+ .env.local
+ .env.*.local
+
+ # OS / Editor
+ .DS_Store
+ *.swp
+ .idea/
+ .vscode/
+
+ # Coverage / Reports
+ .coverage
+ htmlcov/
+ coverage.xml
+

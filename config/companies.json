@@ -1,0 +1,16 @@
+{
+  "companies": [
+    {
+      "id": "stripe",
+      "name": "Stripe",
+      "ats": "ashby",
+      "careers_url": "https://stripe.com/jobs/search"
+    },
+    {
+      "id": "coinbase",
+      "name": "Coinbase",
+      "ats": "ashby",
+      "careers_url": "https://www.coinbase.com/careers"
+    }
+  ]
+}

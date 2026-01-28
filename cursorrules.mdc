@@ -1,0 +1,661 @@
+---
+alwaysApply: true
+---
+
+## Data Pipeline Best Practices
+
+### Scraping
+
+- **Rate limiting:** Max 5 concurrent requests to any ATS platform
+- **Respect robots.txt:** Check before scraping new sources
+- **User-Agent:** Set descriptive UA: `RecruiterMarketBrief/1.0`
+- **Caching:** Cache responses for 24 hours to avoid redundant scraping
+- **Idempotency:** Re-running scraper should produce same results
+
+### Data Quality
+
+- **Validate inputs:** Use Pydantic models for all data objects
+- **Dedupe early:** Remove duplicates at ingestion time
+- **Normalize immediately:** Don't store raw + normalized separately
+- **Track provenance:** Every row needs `source_url` and `scraped_at`
+
+**Example Pydantic Model:**
+
+```python
+from pydantic import BaseModel, HttpUrl, Field
+from datetime import datetime
+
+class JobPosting(BaseModel):
+    """Validated job posting record."""
+    source_job_id: str = Field(..., min_length=1)
+    company_id: str
+    title: str = Field(..., min_length=5, max_length=200)
+    url: HttpUrl
+    first_seen: datetime
+    function: str | None = None
+    level: str | None = None
+
+    class Config:
+        frozen = True  # Immutable after creation
+```
+
+### Database Operations
+
+- **Use connection pooling:** Supabase client handles this
+- **Batch inserts:** Insert 100 rows at a time, not 1-by-1
+- **Upsert pattern:** Use ON CONFLICT for idempotent inserts
+- **Index properly:** All foreign keys and frequently filtered columns
+- **No ORMs:** Use raw SQL with psycopg3 for clarity and performance
+
+**Example Batch Upsert:**
+
+```python
+from supabase import create_client
+
+def upsert_job_postings(postings: list[dict]) -> None:
+    """Batch upsert job postings to avoid duplicates."""
+    supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+    # Batch into chunks of 100
+    for i in range(0, len(postings), 100):
+        batch = postings[i:i+100]
+        supabase.table('job_postings').upsert(
+            batch,
+            on_conflict='source_job_id'
+        ).execute()
+```
+
+---
+
+## Testing Standards
+
+### Unit Tests
+
+- **Framework:** pytest
+- **Coverage target:** 80% line coverage
+- **Test file naming:** `test_<module_name>.py`
+- **Test function naming:** `test_<function>_<scenario>_<expected_result>`
+- **Use fixtures:** For database connections, API mocks, sample data
+- **Mock external APIs:** Never hit real Apify/Supabase in unit tests
+
+**Example Test:**
+
+```python
+import pytest
+from src.processors.classifier import classify_job_function
+
+def test_classify_job_function_operations_keyword_returns_operations():
+    """Should classify 'Director of Operations' as operations function."""
+    result = classify_job_function("Director of Operations")
+    assert result == "operations"
+
+def test_classify_job_function_ambiguous_title_returns_none():
+    """Should return None for titles without clear function keywords."""
+    result = classify_job_function("VP of Strategy")
+    assert result is None
+
+@pytest.fixture
+def sample_job_posting():
+    """Fixture providing a sample job posting for tests."""
+    return {
+        'title': 'VP of Finance',
+        'company': 'Acme Corp',
+        'url': 'https://jobs.acme.com/vp-finance'
+    }
+```
+
+### Integration Tests
+
+- **Test database operations** against local Supabase instance
+- **Test Apify calls** using their test actor endpoints
+- **Use environment variables** for credentials (never hardcode)
+- **Clean up after tests:** Delete test data in teardown
+
+### Test Organization
+
+```
+tests/
+├── unit/
+│   ├── test_scrapers.py
+│   ├── test_classifiers.py
+│   └── test_metrics.py
+├── integration/
+│   ├── test_database.py
+│   └── test_pipeline_e2e.py
+└── fixtures/
+    ├── sample_jobs.json
+    └── conftest.py  # Shared fixtures
+```
+
+---
+
+## CI/CD with GitHub Actions
+
+### Workflows
+
+**1. CI Workflow (`.github/workflows/ci.yml`)** - Runs on every PR
+
+```yaml
+name: CI
+on: [pull_request, push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check .
+      - run: black --check .
+      - run: pytest --cov=src --cov-report=term-missing
+
+  type-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+      - run: pip install -r requirements-dev.txt
+      - run: mypy src/
+```
+
+**2. Daily Scrape Workflow (`.github/workflows/scrape.yml`)** - Scheduled
+
+```yaml
+name: Daily Scrape
+on:
+  schedule:
+    - cron: "0 6 * * *" # 6 AM UTC daily
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+      - run: pip install -r requirements.txt
+      - run: python scripts/run_daily_scrape.py
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+
+      # Alert on failure
+      - name: Slack notification on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+```
+
+**3. Weekly Metrics Workflow (`.github/workflows/metrics.yml`)**
+
+```yaml
+name: Compute Metrics
+on:
+  schedule:
+    - cron: "0 0 * * 0" # Sunday midnight UTC
+  workflow_dispatch:
+
+jobs:
+  compute:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+      - run: pip install -r requirements.txt
+      - run: python scripts/compute_metrics.py
+```
+
+### Secret Management
+
+- **Store in GitHub Secrets:** SUPABASE_URL, SUPABASE_KEY, APIFY_TOKEN
+- **Never commit secrets:** Add `.env` to `.gitignore`
+- **Use python-dotenv** for local development
+- **Rotate secrets quarterly**
+
+### Deployment Strategy
+
+- **Main branch = production:** Only merge tested, reviewed code
+- **No direct commits to main:** All changes via PR
+- **Squash merge:** Keep commit history clean
+- **Tag releases:** v1.0.0, v1.1.0 for major milestones
+
+---
+
+## Database Management
+
+### Schema Migrations
+
+- **Tool:** Plain SQL files in `database/migrations/`
+- **Naming:** `YYYYMMDD_HHmm_description.sql`
+- **Apply via:** Supabase dashboard or SQL editor
+- **Never delete migrations:** Always create new migration to revert
+
+**Example Migration:**
+
+```sql
+-- database/migrations/20250128_1200_add_location_columns.sql
+
+ALTER TABLE job_postings
+ADD COLUMN location_city VARCHAR(100),
+ADD COLUMN location_state VARCHAR(2),
+ADD COLUMN is_remote BOOLEAN DEFAULT FALSE;
+
+CREATE INDEX idx_job_postings_location
+ON job_postings(location_state, is_remote);
+```
+
+### Backup Strategy
+
+- **Supabase auto-backup:** Daily backups retained for 7 days
+- **Manual exports:** Weekly CSV exports to S3 (if needed)
+- **Test restores:** Quarterly restore test to staging
+
+### Query Optimization
+
+- **Use EXPLAIN ANALYZE** for slow queries
+- **Index foreign keys** and filter columns
+- **Avoid SELECT \*:** Only fetch needed columns
+- **Paginate large results:** LIMIT + OFFSET or cursor-based
+
+---
+
+## Environment Setup
+
+### Required Tools
+
+```bash
+# Python 3.11+
+brew install python@3.11  # macOS
+
+# Poetry (dependency management)
+curl -sSL https://install.python-poetry.org | python3 -
+
+# Supabase CLI
+brew install supabase/tap/supabase
+```
+
+### Local Development
+
+```bash
+# Clone repo
+git clone https://github.com/yourusername/recruiter-market-brief.git
+cd recruiter-market-brief
+
+# Install dependencies
+poetry install
+
+# Setup pre-commit hooks
+poetry run pre-commit install
+
+# Create .env file
+cp .env.example .env
+# Edit .env with your credentials
+
+# Run tests
+poetry run pytest
+
+# Run scraper locally (single company)
+poetry run python scripts/test_scraper.py --company=stripe
+```
+
+### Dependencies
+
+**requirements.txt:**
+
+```txt
+# Core
+python-dotenv==1.0.0
+pydantic==2.5.0
+structlog==24.1.0
+
+# Database
+supabase==2.3.0
+psycopg[binary]==3.1.16
+
+# Scraping
+apify-client==1.6.0
+requests==2.31.0
+tenacity==8.2.3
+
+# Processing
+pandas==2.1.4
+numpy==1.26.3
+
+# Newsletter
+jinja2==3.1.3
+markdown==3.5.1
+```
+
+**requirements-dev.txt:**
+
+```txt
+-r requirements.txt
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+faker==22.0.0
+
+# Linting
+ruff==0.1.9
+black==23.12.1
+mypy==1.8.0
+
+# Pre-commit
+pre-commit==3.6.0
+```
+
+---
+
+## Logging & Monitoring
+
+### Structured Logging
+
+```python
+import structlog
+
+# Configure at app startup
+structlog.configure(
+    processors=[
+        structlog.processors.TimeStamper(fmt="iso"),
+        structlog.processors.JSONRenderer()
+    ]
+)
+
+logger = structlog.get_logger()
+
+# Usage
+logger.info("scrape_started", company="stripe", job_count=23)
+logger.error("scrape_failed", company="brex", error="timeout")
+```
+
+### Monitoring Checklist
+
+- [ ] **Scraper success rate:** Track in Supabase metrics table
+- [ ] **Data freshness:** Alert if no new data in 48 hours
+- [ ] **Classification accuracy:** Sample 50 jobs monthly, validate manually
+- [ ] **Pipeline runtime:** Track and alert if >30 minutes
+
+### Error Alerting
+
+- **Slack webhook:** Send alerts to #alerts channel
+- **Email:** Backup alerting via Supabase functions
+- **PagerDuty:** Optional for critical failures (Phase 2)
+
+---
+
+## Security Best Practices
+
+### Credentials
+
+- **Never hardcode:** Use environment variables
+- **Rotate quarterly:** Supabase, Apify, newsletter API keys
+- **Principle of least privilege:** Read-only keys where possible
+- **Audit access logs:** Review Supabase logs monthly
+
+### Data Privacy
+
+- **No PII:** We only store company names and job titles (public data)
+- **Aggregation only:** Newsletter never mentions individual candidates
+- **Scraping ethics:** Respect robots.txt, rate limits
+- **Terms of Service:** Review Ashby/Greenhouse/Lever ToS for compliance
+
+### API Security
+
+- **Rate limiting:** Max 100 requests/hour per IP to any endpoint (if building API later)
+- **Authentication:** Use Supabase RLS (Row Level Security) policies
+- **HTTPS only:** Never accept HTTP connections
+- **Input validation:** Sanitize all user inputs with Pydantic
+
+---
+
+## Documentation Standards
+
+### README.md Structure
+
+```markdown
+# Recruiter Market Brief
+
+[One-line description]
+
+## Quick Start
+
+[5 steps to run locally]
+
+## Architecture
+
+[Diagram + explanation]
+
+## Development
+
+[How to contribute]
+
+## Deployment
+
+[How to deploy]
+```
+
+### Code Documentation
+
+- **Every module:** Docstring explaining purpose
+- **Every public function:** Google-style docstring with examples
+- **Complex logic:** Inline comments explaining "why", not "what"
+- **Configuration:** Document all env vars in `.env.example`
+
+### API Documentation (if building)
+
+- **Use OpenAPI/Swagger:** Generate from FastAPI if needed
+- **Provide examples:** Request/response samples for each endpoint
+- **Document errors:** All possible error codes and meanings
+
+---
+
+## Common Patterns & Anti-Patterns
+
+### ✅ DO
+
+**Idempotent operations:**
+
+```python
+def upsert_job(job_data: dict) -> None:
+    """Can be called multiple times safely."""
+    supabase.table('jobs').upsert(job_data, on_conflict='source_job_id').execute()
+```
+
+**Explicit error handling:**
+
+```python
+try:
+    result = scrape_company(company_id)
+except ApifyTimeout:
+    logger.warning("timeout", company_id=company_id)
+    return None  # Graceful degradation
+except ApifyError as e:
+    logger.error("api_error", company_id=company_id, error=str(e))
+    raise  # Fail loudly for unexpected errors
+```
+
+**Configuration via files:**
+
+```python
+# config/companies.json
+{
+  "companies": [
+    {"id": "stripe", "name": "Stripe", "ats": "ashby"},
+    {"id": "coinbase", "name": "Coinbase", "ats": "ashby"}
+  ]
+}
+
+# Load in code
+import json
+with open('config/companies.json') as f:
+    COMPANIES = json.load(f)['companies']
+```
+
+### ❌ DON'T
+
+**String matching without normalization:**
+
+```python
+# BAD
+if 'director' in title:  # Fails for "Director" or "DIRECTOR"
+    return 'director'
+
+# GOOD
+if 'director' in title.lower():
+    return 'director'
+```
+
+**Uncontrolled loops:**
+
+```python
+# BAD
+for company in all_companies:
+    scrape(company)  # No rate limiting, no parallelization
+
+# GOOD
+from concurrent.futures import ThreadPoolExecutor
+with ThreadPoolExecutor(max_workers=5) as executor:
+    executor.map(scrape, all_companies)
+```
+
+**Magic numbers:**
+
+```python
+# BAD
+if days_open > 60:  # What is 60?
+
+# GOOD
+STALE_THRESHOLD_DAYS = 60
+if days_open > STALE_THRESHOLD_DAYS:
+```
+
+---
+
+## Agent Onboarding Checklist
+
+When a new AI agent (or human) joins this project:
+
+### Day 1: Understand
+
+- [ ] Read this .cursorrules file completely
+- [ ] Read `PRD_v1.md` to understand business goals
+- [ ] Review `database/schema.sql` to understand data model
+- [ ] Examine `config/companies.json` to see RMI-73 index
+
+### Day 2: Setup
+
+- [ ] Clone repo and install dependencies
+- [ ] Setup local .env with credentials
+- [ ] Run test suite: `pytest`
+- [ ] Run single-company scraper test
+
+### Day 3: Contribution
+
+- [ ] Pick a small issue from GitHub Issues
+- [ ] Create feature branch: `git checkout -b feature/your-feature`
+- [ ] Write code following style guide above
+- [ ] Add tests for your changes
+- [ ] Submit PR with clear description
+
+### PR Review Checklist
+
+- [ ] Tests pass (`pytest`)
+- [ ] Linting passes (`ruff check`, `black --check`)
+- [ ] Type checking passes (`mypy`)
+- [ ] Code coverage doesn't decrease
+- [ ] Documentation updated if needed
+- [ ] No secrets committed
+
+---
+
+## Performance Guidelines
+
+### Scraping Performance
+
+- **Target:** Process 73 companies in <15 minutes
+- **Parallelization:** 5 concurrent workers max
+- **Timeout:** 30 seconds per company
+- **Retry:** 3 attempts with exponential backoff
+
+### Database Performance
+
+- **Query time:** All queries <1 second
+- **Batch size:** 100 rows per insert
+- **Connection pool:** 10 connections max
+- **Index usage:** EXPLAIN ANALYZE shows index scan, not seq scan
+
+### Memory Usage
+
+- **Pipeline:** <500MB RAM total
+- **Batch processing:** Stream large datasets, don't load all into memory
+- **Pandas:** Use `chunksize` parameter for large CSV files
+
+---
+
+## Troubleshooting Guide
+
+### Scraper Failures
+
+**Symptom:** Company returns 0 jobs  
+**Check:**
+
+1. Is ATS URL still valid? (visit manually)
+2. Has company changed ATS platforms?
+3. Is Apify actor down? (check status page)
+
+**Symptom:** Timeout errors  
+**Solution:** Increase timeout, check network, verify Apify quota
+
+### Classification Errors
+
+**Symptom:** Wrong function/level assigned  
+**Check:**
+
+1. Review keyword dictionaries in `config/taxonomies.json`
+2. Check classification logic in `src/processors/classifier.py`
+3. Add edge case to test suite
+
+**Solution:** Update keywords, add test, re-run classification
+
+### Pipeline Not Running
+
+**Symptom:** GitHub Action shows no recent runs  
+**Check:**
+
+1. Verify cron schedule in `.github/workflows/scrape.yml`
+2. Check Actions tab for error messages
+3. Verify secrets are set in repo settings
+
+---
+
+## Getting Help
+
+### Resources
+
+- **Project Docs:** `/docs` folder (TBD)
+- **Supabase Docs:** https://supabase.com/docs
+- **Apify Docs:** https://docs.apify.com
+- **Python Best Practices:** https://docs.python-guide.org
+
+### Contact
+
+- **Technical questions:** [Your email or Slack]
+- **Bug reports:** GitHub Issues
+- **Feature requests:** GitHub Discussions
+
+---
+
+## Version History
+
+- **v1.0** (2025-01-28): Initial rules for Phase 1 MVP
+- **v1.1** (TBD): Updates after first 3 newsletter issues
+
+---
+
+**Remember:** Ship fast, iterate based on real data, maintain high code quality.
