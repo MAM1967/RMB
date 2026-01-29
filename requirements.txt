@@ -7,8 +7,8 @@
  supabase==2.3.0
  psycopg[binary]==3.1.16
 
- # Scraping
- apify-client==1.6.0
+# Scraping
+apify-client>=2.0.0
  requests==2.31.0
  tenacity==8.2.3
 
