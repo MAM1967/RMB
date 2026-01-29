@@ -18,16 +18,26 @@
         title: Raw job title string.
 
     Returns:
-        A function name such as \"operations\" or \"finance\", or None if unknown.
+        A function name such as \"operations\", \"finance\", \"gtm\", \"product\", \"people\", \"engineering\", \"marketing\", or None if unknown.
     """
-
     normalized = title.lower()
-    if "operations" in normalized:
+    
+    # Function keywords from PRD
+    if any(kw in normalized for kw in ["operations", "supply chain", "logistics", "program manager", "process", " ops"]):
         return "operations"
-    if "finance" in normalized:
+    if any(kw in normalized for kw in ["finance", "accounting", "treasury", "fp&a", "controller", "audit"]):
         return "finance"
-    if "marketing" in normalized:
+    if any(kw in normalized for kw in ["sales", "revenue", "gtm", "growth", "business development", "account exec", "partnerships", "customer success"]):
+        return "gtm"
+    if any(kw in normalized for kw in ["product", "pm", "product manager"]):
+        return "product"
+    if any(kw in normalized for kw in ["people", "hr", "human resources", "talent", "recruiting"]):
+        return "people"
+    if any(kw in normalized for kw in ["engineer", "software", "technical", "infrastructure", "developer", "devops"]):
+        return "engineering"
+    if any(kw in normalized for kw in ["marketing", "brand", "communications", "content"]):
         return "marketing"
+    
     return None
 
 
@@ -39,15 +49,19 @@
         title: Raw job title string.
 
     Returns:
-        A level such as \"director\" or \"vp\", or None if unknown.
+        A level such as \"c-level\", \"svp\", \"vp\", or \"director\", or None if unknown.
     """
-
     normalized = title.lower()
-    if "director" in normalized:
-        return "director"
-    if "vp" in normalized or "vice president" in normalized:
+    
+    # Check in order of seniority (most senior first)
+    if any(kw in normalized for kw in ["chief", "ceo", "cfo", "coo", "cto", "cmo", "c-level", "c suite"]):
+        return "c-level"
+    if any(kw in normalized for kw in ["senior vice president", "svp", "sr vp"]):
+        return "svp"
+    if any(kw in normalized for kw in ["vice president", "vp", "v.p."]):
         return "vp"
-    if "head of" in normalized:
-        return "head"
+    if any(kw in normalized for kw in ["director", "dir.", "head of"]):
+        return "director"
+    
     return None
 

@@ -21,6 +21,7 @@
 ### Epic 1: Foundation & Infrastructure Setup
 
 #### Story 1.1: Project Setup & Repository
+
 **Status:** 🟢 Done  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 1, Days 1-2
@@ -29,6 +30,7 @@
 Set up the foundational infrastructure including GitHub repo, Supabase project, Python environment, and project structure.
 
 **Acceptance Criteria:**
+
 - [x] GitHub repository created and initialized
 - [x] Supabase project created (or schema ready to apply)
 - [x] Python 3.11+ environment configured
@@ -42,6 +44,7 @@ Set up the foundational infrastructure including GitHub repo, Supabase project, 
 ---
 
 #### Story 1.2: Database Schema Implementation
+
 **Status:** 🟢 Done  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 1, Days 6-7
@@ -50,6 +53,7 @@ Set up the foundational infrastructure including GitHub repo, Supabase project, 
 Create the database schema in Supabase with tables for companies, job_postings, and metrics_cache.
 
 **Acceptance Criteria:**
+
 - [x] `companies` table created with required fields (id, name, ats_platform, sector, size)
 - [x] `job_postings` table created with all required fields (source_job_id, company_id, title, function, level, dates, etc.)
 - [x] `weekly_metrics` table created for pre-computed metrics
@@ -66,6 +70,7 @@ Create the database schema in Supabase with tables for companies, job_postings, 
 ### Epic 2: Data Scraping Pipeline
 
 #### Story 2.1: Apify Scraper Integration - Ashby
+
 **Status:** 🟡 In Progress  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 1, Days 3-5
@@ -74,6 +79,7 @@ Create the database schema in Supabase with tables for companies, job_postings, 
 Integrate Apify Ashby actor to scrape job postings from Ashby-powered company careers pages. Test with 5 companies initially.
 
 **Acceptance Criteria:**
+
 - [ ] Apify client configured with authentication
 - [ ] Test Apify Ashby actor with 5 sample companies
 - [ ] Extract raw JSON data (title, company, URL, date, etc.)
@@ -82,13 +88,15 @@ Integrate Apify Ashby actor to scrape job postings from Ashby-powered company ca
 - [ ] Error handling for failed scrapes
 - [ ] Logging for scrape operations
 
-**Dependencies:**  
+**Dependencies:**
+
 - Apify account and token
 - List of 5 test companies using Ashby
 
 ---
 
 #### Story 2.2: Apify Scraper Integration - Greenhouse
+
 **Status:** 🔴 Not Started  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 1, Days 3-5
@@ -97,19 +105,22 @@ Integrate Apify Ashby actor to scrape job postings from Ashby-powered company ca
 Integrate Apify Greenhouse actor to scrape job postings from Greenhouse-powered company careers pages.
 
 **Acceptance Criteria:**
+
 - [ ] Apify Greenhouse actor configured
 - [ ] Test with 2-3 Greenhouse companies
 - [ ] Extract raw JSON data matching Ashby format
 - [ ] Handle rate limiting
 - [ ] Error handling and logging
 
-**Dependencies:**  
+**Dependencies:**
+
 - Story 2.1 (Ashby) as reference implementation
 - List of Greenhouse companies
 
 ---
 
 #### Story 2.3: Apify Scraper Integration - Lever
+
 **Status:** 🔴 Not Started  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 1, Days 3-5
@@ -118,19 +129,22 @@ Integrate Apify Greenhouse actor to scrape job postings from Greenhouse-powered 
 Integrate Apify Lever actor to scrape job postings from Lever-powered company careers pages.
 
 **Acceptance Criteria:**
+
 - [ ] Apify Lever actor configured
 - [ ] Test with 1-2 Lever companies
 - [ ] Extract raw JSON data matching format
 - [ ] Handle rate limiting
 - [ ] Error handling and logging
 
-**Dependencies:**  
+**Dependencies:**
+
 - Story 2.1 (Ashby) as reference implementation
 - List of Lever companies
 
 ---
 
 #### Story 2.4: Full Scrape - All 73 Companies
+
 **Status:** 🔴 Not Started  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 2, Days 11-12
@@ -139,6 +153,7 @@ Integrate Apify Lever actor to scrape job postings from Lever-powered company ca
 Run the scraping pipeline on all 73 companies in the RMI-73 index. Debug failures and ensure >95% success rate.
 
 **Acceptance Criteria:**
+
 - [ ] Scrape all 67 Ashby companies
 - [ ] Scrape all 4 Greenhouse companies
 - [ ] Scrape all 2 Lever companies
@@ -147,7 +162,8 @@ Run the scraping pipeline on all 73 companies in the RMI-73 index. Debug failure
 - [ ] All successful scrapes stored in Supabase
 - [ ] Manual review of failures and retry logic
 
-**Dependencies:**  
+**Dependencies:**
+
 - Stories 2.1, 2.2, 2.3 completed
 - Database schema applied
 - Complete companies.json with all 73 companies
@@ -157,6 +173,7 @@ Run the scraping pipeline on all 73 companies in the RMI-73 index. Debug failure
 ### Epic 3: Data Normalization & Classification
 
 #### Story 3.1: Title Classification - Function
+
 **Status:** 🟡 In Progress  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 2, Days 8-10
@@ -165,6 +182,7 @@ Run the scraping pipeline on all 73 companies in the RMI-73 index. Debug failure
 Build a keyword-based classifier to assign job functions (operations, finance, gtm, product, people, engineering, marketing) to job titles.
 
 **Acceptance Criteria:**
+
 - [ ] Keyword dictionary for each function category
 - [ ] Classification function implemented (classify_job_function)
 - [ ] Test on 20+ sample job titles
@@ -172,7 +190,8 @@ Build a keyword-based classifier to assign job functions (operations, finance, g
 - [ ] Handle edge cases (ambiguous titles, multiple keywords)
 - [ ] Unit tests with >80% coverage
 
-**Dependencies:**  
+**Dependencies:**
+
 - Sample job titles from scraped data
 - Keyword taxonomy defined
 
@@ -182,6 +201,7 @@ Build a keyword-based classifier to assign job functions (operations, finance, g
 ---
 
 #### Story 3.2: Title Classification - Level
+
 **Status:** 🟡 In Progress  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 2, Days 8-10
@@ -190,6 +210,7 @@ Build a keyword-based classifier to assign job functions (operations, finance, g
 Build a pattern-based classifier to assign seniority levels (director, vp, svp, c-level) to job titles.
 
 **Acceptance Criteria:**
+
 - [ ] Level patterns defined (director, vp, svp, c-level)
 - [ ] Classification function implemented (classify_job_level)
 - [ ] Test on 20+ sample job titles
@@ -197,7 +218,8 @@ Build a pattern-based classifier to assign seniority levels (director, vp, svp, 
 - [ ] Handle variations (VP vs Vice President, Dir. vs Director)
 - [ ] Unit tests with >80% coverage
 
-**Dependencies:**  
+**Dependencies:**
+
 - Sample job titles from scraped data
 
 **Notes:**  
@@ -206,6 +228,7 @@ Build a pattern-based classifier to assign seniority levels (director, vp, svp, 
 ---
 
 #### Story 3.3: Data Deduplication Logic
+
 **Status:** 🔴 Not Started  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 2, Days 13-14
@@ -214,6 +237,7 @@ Build a pattern-based classifier to assign seniority levels (director, vp, svp, 
 Implement deduplication logic to handle the same job posting seen across multiple scrape days. Calculate first_seen_date and last_seen_date.
 
 **Acceptance Criteria:**
+
 - [ ] Dedupe logic based on (source_job_id, company_id) unique constraint
 - [ ] Upsert pattern implemented (ON CONFLICT)
 - [ ] first_seen_date set on first observation
@@ -222,13 +246,15 @@ Implement deduplication logic to handle the same job posting seen across multipl
 - [ ] <5% duplicate rate in final dataset
 - [ ] Integration tests with sample data
 
-**Dependencies:**  
+**Dependencies:**
+
 - Database schema with unique constraint
 - Multiple days of scrape data
 
 ---
 
 #### Story 3.4: Data Storage Pipeline
+
 **Status:** 🔴 Not Started  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 2, Days 11-12
@@ -237,6 +263,7 @@ Implement deduplication logic to handle the same job posting seen across multipl
 Build the script that normalizes scraped data, applies classification, and stores results in Supabase job_postings table.
 
 **Acceptance Criteria:**
+
 - [ ] Normalize raw JSON from all 3 ATS platforms
 - [ ] Apply function and level classification
 - [ ] Batch upsert to Supabase (100 rows at a time)
@@ -245,7 +272,8 @@ Build the script that normalizes scraped data, applies classification, and store
 - [ ] Logging for each step
 - [ ] Test with 5 companies' data end-to-end
 
-**Dependencies:**  
+**Dependencies:**
+
 - Stories 3.1, 3.2 (classification)
 - Database schema applied
 - Supabase client configured
@@ -255,6 +283,7 @@ Build the script that normalizes scraped data, applies classification, and store
 ### Epic 4: Metrics Computation
 
 #### Story 4.1: Market Volume Index Calculator
+
 **Status:** 🔴 Not Started  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 3, Days 15-17
@@ -263,6 +292,7 @@ Build the script that normalizes scraped data, applies classification, and store
 Calculate Metric 1: Total Director/VP+ roles by function, with 2-week change comparison.
 
 **Acceptance Criteria:**
+
 - [ ] Query job_postings for Director+ roles (director, vp, svp, c-level)
 - [ ] Group by function (operations, finance, gtm, product, people)
 - [ ] Calculate current count
@@ -272,13 +302,15 @@ Calculate Metric 1: Total Director/VP+ roles by function, with 2-week change com
 - [ ] Unit tests with sample data
 - [ ] Performance: completes in <30 seconds
 
-**Dependencies:**  
+**Dependencies:**
+
 - At least 2 weeks of historical data
 - Classification working correctly
 
 ---
 
 #### Story 4.2: Stale Search Index Calculator
+
 **Status:** 🔴 Not Started  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 3, Days 15-17
@@ -287,22 +319,25 @@ Calculate Metric 1: Total Director/VP+ roles by function, with 2-week change com
 Calculate Metric 2: Percentage of roles open >60 days by function, with 2-week change.
 
 **Acceptance Criteria:**
+
 - [ ] Query roles where (current_date - first_seen_date) > 60 days
 - [ ] Group by function
-- [ ] Calculate % stale = (stale_roles / total_roles) * 100
+- [ ] Calculate % stale = (stale_roles / total_roles) \* 100
 - [ ] Calculate % from 2 weeks ago
 - [ ] Compute change (+/- percentage points)
 - [ ] Format output matching newsletter spec
 - [ ] Unit tests with sample data
 - [ ] Handle edge cases (no roles, all stale, etc.)
 
-**Dependencies:**  
+**Dependencies:**
+
 - At least 60 days of historical data
 - first_seen_date logic working
 
 ---
 
 #### Story 4.3: High-Activity Employers Calculator
+
 **Status:** 🔴 Not Started  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 3, Days 15-17
@@ -311,6 +346,7 @@ Calculate Metric 2: Percentage of roles open >60 days by function, with 2-week c
 Calculate Metric 3: Companies with most new Director+ postings in last 2 weeks, ranked top 10.
 
 **Acceptance Criteria:**
+
 - [ ] Query new postings in last 14 days (first_seen_date within window)
 - [ ] Filter to Director+ level only
 - [ ] Count per company
@@ -319,13 +355,15 @@ Calculate Metric 3: Companies with most new Director+ postings in last 2 weeks, 
 - [ ] Handle ties (alphabetical)
 - [ ] Unit tests with sample data
 
-**Dependencies:**  
+**Dependencies:**
+
 - At least 2 weeks of historical data
 - Company dimension table populated
 
 ---
 
 #### Story 4.4: Metrics Cache & Storage
+
 **Status:** 🔴 Not Started  
 **Priority:** P1 (High)  
 **Sprint:** Week 3, Days 15-17
@@ -334,6 +372,7 @@ Calculate Metric 3: Companies with most new Director+ postings in last 2 weeks, 
 Store computed metrics in weekly_metrics table for fast newsletter generation and historical tracking.
 
 **Acceptance Criteria:**
+
 - [ ] Store volume metrics by (week_start_date, company_id, function, level)
 - [ ] Store stale % metrics by (week_start_date, function)
 - [ ] Store top employers by (week_start_date)
@@ -341,7 +380,8 @@ Store computed metrics in weekly_metrics table for fast newsletter generation an
 - [ ] Query function to retrieve latest metrics
 - [ ] Integration tests
 
-**Dependencies:**  
+**Dependencies:**
+
 - Stories 4.1, 4.2, 4.3 (calculators)
 - weekly_metrics table schema
 
@@ -350,6 +390,7 @@ Store computed metrics in weekly_metrics table for fast newsletter generation an
 ### Epic 5: Automation & Scheduling
 
 #### Story 5.1: Daily Scrape GitHub Action
+
 **Status:** 🟢 Done  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 3, Days 18-19
@@ -358,6 +399,7 @@ Store computed metrics in weekly_metrics table for fast newsletter generation an
 Set up GitHub Actions workflow to run daily scrape automatically every 2 days (or daily).
 
 **Acceptance Criteria:**
+
 - [x] GitHub Actions workflow file created
 - [x] Scheduled cron job (every 2 days or daily)
 - [x] Manual trigger option (workflow_dispatch)
@@ -374,6 +416,7 @@ Set up GitHub Actions workflow to run daily scrape automatically every 2 days (o
 ---
 
 #### Story 5.2: Weekly Metrics GitHub Action
+
 **Status:** 🟢 Done  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 3, Days 18-19
@@ -382,6 +425,7 @@ Set up GitHub Actions workflow to run daily scrape automatically every 2 days (o
 Set up GitHub Actions workflow to compute weekly metrics every Sunday at midnight UTC.
 
 **Acceptance Criteria:**
+
 - [x] GitHub Actions workflow file created
 - [x] Scheduled cron job (Sunday 00:00 UTC)
 - [x] Manual trigger option
@@ -398,6 +442,7 @@ Set up GitHub Actions workflow to compute weekly metrics every Sunday at midnigh
 ---
 
 #### Story 5.3: Error Monitoring & Alerts
+
 **Status:** 🔴 Not Started  
 **Priority:** P1 (High)  
 **Sprint:** Week 3, Days 20-21
@@ -406,13 +451,15 @@ Set up GitHub Actions workflow to compute weekly metrics every Sunday at midnigh
 Set up basic error monitoring and alerting for pipeline failures.
 
 **Acceptance Criteria:**
+
 - [ ] Slack webhook integration in GitHub Actions
 - [ ] Email alert on scraper failure
 - [ ] Alert includes: failed companies, error messages, timestamp
 - [ ] Test alert delivery
 - [ ] Document alert setup
 
-**Dependencies:**  
+**Dependencies:**
+
 - Slack webhook URL or email service
 - GitHub Secrets configured
 
@@ -421,6 +468,7 @@ Set up basic error monitoring and alerting for pipeline failures.
 ### Epic 6: Newsletter Generation
 
 #### Story 6.1: Newsletter Markdown Template
+
 **Status:** 🔴 Not Started  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 4, Days 22-24
@@ -429,6 +477,7 @@ Set up basic error monitoring and alerting for pipeline failures.
 Create the markdown newsletter template matching the PRD format with placeholders for metrics.
 
 **Acceptance Criteria:**
+
 - [ ] Template file created (newsletter_template.md)
 - [ ] Includes all sections: Market Snapshot, Stale Searches, High-Activity Employers, Methodology
 - [ ] Placeholders for all 3 metrics
@@ -437,12 +486,14 @@ Create the markdown newsletter template matching the PRD format with placeholder
 - [ ] Unsubscribe link placeholder
 - [ ] Professional formatting
 
-**Dependencies:**  
+**Dependencies:**
+
 - PRD newsletter format specification
 
 ---
 
 #### Story 6.2: Newsletter Generation Script
+
 **Status:** 🔴 Not Started  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 4, Days 22-24
@@ -451,6 +502,7 @@ Create the markdown newsletter template matching the PRD format with placeholder
 Build script that pulls metrics from cache, populates template, and generates final markdown newsletter.
 
 **Acceptance Criteria:**
+
 - [ ] Load latest metrics from weekly_metrics table
 - [ ] Format metrics according to template spec
 - [ ] Populate template with real data
@@ -459,7 +511,8 @@ Build script that pulls metrics from cache, populates template, and generates fi
 - [ ] Test with real metrics data
 - [ ] Output matches newsletter format exactly
 
-**Dependencies:**  
+**Dependencies:**
+
 - Story 6.1 (template)
 - Stories 4.1, 4.2, 4.3 (metrics calculators)
 - Story 4.4 (metrics cache)
@@ -467,6 +520,7 @@ Build script that pulls metrics from cache, populates template, and generates fi
 ---
 
 #### Story 6.3: MailerLite/ConvertKit Integration
+
 **Status:** 🔴 Not Started  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 4, Days 25-26
@@ -475,6 +529,7 @@ Build script that pulls metrics from cache, populates template, and generates fi
 Integrate with MailerLite or ConvertKit API to send newsletter emails to subscribers.
 
 **Acceptance Criteria:**
+
 - [ ] MailerLite or ConvertKit account setup
 - [ ] API client configured
 - [ ] Convert markdown to HTML (or use markdown support)
@@ -484,13 +539,15 @@ Integrate with MailerLite or ConvertKit API to send newsletter emails to subscri
 - [ ] Unsubscribe link working
 - [ ] Test email rendering in Gmail, Outlook, Apple Mail
 
-**Dependencies:**  
+**Dependencies:**
+
 - Story 6.2 (generation script)
 - Email service account
 
 ---
 
 #### Story 6.4: First Newsletter Issue
+
 **Status:** 🔴 Not Started  
 **Priority:** P0 (Critical)  
 **Sprint:** Week 4, Day 27
@@ -499,6 +556,7 @@ Integrate with MailerLite or ConvertKit API to send newsletter emails to subscri
 Generate and send Issue #1 of the Recruiter Market Brief newsletter.
 
 **Acceptance Criteria:**
+
 - [ ] Write editorial intro (200 words)
 - [ ] Generate Issue #1 with real data
 - [ ] Review for accuracy (all numbers correct)
@@ -507,7 +565,8 @@ Generate and send Issue #1 of the Recruiter Market Brief newsletter.
 - [ ] Verify delivery
 - [ ] Document production time (<2 hours)
 
-**Dependencies:**  
+**Dependencies:**
+
 - Story 6.3 (email integration)
 - At least 2 weeks of data collection
 - Initial subscriber list
@@ -517,6 +576,7 @@ Generate and send Issue #1 of the Recruiter Market Brief newsletter.
 ### Epic 7: Quality Assurance & Monitoring
 
 #### Story 7.1: Data Quality Validation
+
 **Status:** 🔴 Not Started  
 **Priority:** P1 (High)  
 **Sprint:** Week 3, Days 20-21
@@ -525,6 +585,7 @@ Generate and send Issue #1 of the Recruiter Market Brief newsletter.
 Implement data quality checks to ensure pipeline reliability.
 
 **Acceptance Criteria:**
+
 - [ ] Scraper success rate >95% (70+ of 73 companies)
 - [ ] Duplicate rate <5%
 - [ ] Title classification accuracy >85% (manual spot check 50 jobs)
@@ -533,13 +594,15 @@ Implement data quality checks to ensure pipeline reliability.
 - [ ] Validation script with clear error reporting
 - [ ] Run validation before each newsletter generation
 
-**Dependencies:**  
+**Dependencies:**
+
 - At least 2 weeks of data
 - Classification logic complete
 
 ---
 
 #### Story 7.2: Pipeline Health Monitoring
+
 **Status:** 🔴 Not Started  
 **Priority:** P1 (High)  
 **Sprint:** Week 3, Days 20-21
@@ -548,6 +611,7 @@ Implement data quality checks to ensure pipeline reliability.
 Monitor pipeline health and track key metrics.
 
 **Acceptance Criteria:**
+
 - [ ] Track scraper uptime (target >95%)
 - [ ] Track data collection lag (target <24 hours)
 - [ ] Track metrics computation time (target <5 minutes)
@@ -555,7 +619,8 @@ Monitor pipeline health and track key metrics.
 - [ ] Basic dashboard or log aggregation
 - [ ] Alert on degradation
 
-**Dependencies:**  
+**Dependencies:**
+
 - GitHub Actions workflows running
 - Logging infrastructure
 
@@ -566,6 +631,7 @@ Monitor pipeline health and track key metrics.
 ### Epic 8: Expanded Data Sources
 
 #### Story 8.1: Workday Platform Support
+
 **Status:** 📋 Backlog  
 **Priority:** P2 (Medium)  
 **Sprint:** Future
@@ -574,6 +640,7 @@ Monitor pipeline health and track key metrics.
 Add support for scraping Workday-powered company careers pages, expanding index by 50-70 major enterprises.
 
 **Acceptance Criteria:**
+
 - [ ] Apify Workday actor identified or custom scraper built
 - [ ] Test with 5 Workday companies
 - [ ] Integrate into existing pipeline
@@ -583,6 +650,7 @@ Add support for scraping Workday-powered company careers pages, expanding index 
 ---
 
 #### Story 8.2: Repost Detection
+
 **Status:** 📋 Backlog  
 **Priority:** P2 (Medium)  
 **Sprint:** Future
@@ -591,6 +659,7 @@ Add support for scraping Workday-powered company careers pages, expanding index 
 Detect when the same role is re-posted (different job ID but same title/company) to improve stale search accuracy.
 
 **Acceptance Criteria:**
+
 - [ ] Algorithm to detect reposts (title + company + level matching)
 - [ ] Track repost history
 - [ ] Update stale search calculation
@@ -599,6 +668,7 @@ Detect when the same role is re-posted (different job ID but same title/company)
 ---
 
 #### Story 8.3: Layoff Data Integration
+
 **Status:** 📋 Backlog  
 **Priority:** P3 (Low)  
 **Sprint:** Future
@@ -607,6 +677,7 @@ Detect when the same role is re-posted (different job ID but same title/company)
 Integrate layoffs.fyi or similar data source to correlate hiring activity with layoff announcements.
 
 **Acceptance Criteria:**
+
 - [ ] Identify layoff data source API
 - [ ] Integrate layoff data into database
 - [ ] Add layoff context to newsletter
@@ -617,6 +688,7 @@ Integrate layoffs.fyi or similar data source to correlate hiring activity with l
 ### Epic 9: Advanced Analytics
 
 #### Story 9.1: Scope Inflation Scoring
+
 **Status:** 📋 Backlog  
 **Priority:** P2 (Medium)  
 **Sprint:** Future
@@ -625,6 +697,7 @@ Integrate layoffs.fyi or similar data source to correlate hiring activity with l
 Analyze job descriptions for keywords indicating "scope inflation" (e.g., "wear many hats", "do everything").
 
 **Acceptance Criteria:**
+
 - [ ] Keyword dictionary for scope inflation signals
 - [ ] Scoring algorithm
 - [ ] Add to newsletter as optional metric
@@ -633,6 +706,7 @@ Analyze job descriptions for keywords indicating "scope inflation" (e.g., "wear 
 ---
 
 #### Story 9.2: Trend Charts Generation
+
 **Status:** 📋 Backlog  
 **Priority:** P2 (Medium)  
 **Sprint:** Future
@@ -641,6 +715,7 @@ Analyze job descriptions for keywords indicating "scope inflation" (e.g., "wear 
 Generate matplotlib charts showing trends over time (volume by function, stale % trends, etc.).
 
 **Acceptance Criteria:**
+
 - [ ] Matplotlib integration
 - [ ] Generate volume trend chart
 - [ ] Generate stale % trend chart
@@ -652,6 +727,7 @@ Generate matplotlib charts showing trends over time (volume by function, stale %
 ### Epic 10: Editorial Tools
 
 #### Story 10.1: Newsletter Assembly Dashboard
+
 **Status:** 📋 Backlog  
 **Priority:** P2 (Medium)  
 **Sprint:** Future
@@ -660,6 +736,7 @@ Generate matplotlib charts showing trends over time (volume by function, stale %
 Build Streamlit or web dashboard for assembling newsletters with live preview and editing.
 
 **Acceptance Criteria:**
+
 - [ ] Streamlit app or web UI
 - [ ] Load latest metrics
 - [ ] Preview newsletter
@@ -672,17 +749,20 @@ Build Streamlit or web dashboard for assembling newsletters with live preview an
 ## Quality Gates Checklist
 
 ### Data Quality
+
 - [ ] 70+ of 73 companies scraping successfully (95%+ coverage)
 - [ ] <5% duplicate job postings
 - [ ] Title classification accuracy >85% on 50 manual spot checks
 - [ ] First_seen_date logic working (no future dates, no nulls)
 
 ### Pipeline Reliability
+
 - [ ] GitHub Action runs successfully 3 days in a row
 - [ ] Email alert sent on scraper failure
 - [ ] Metrics computation completes in <5 minutes
 
 ### Newsletter Quality
+
 - [ ] All 3 metrics display real data (no placeholders)
 - [ ] Newsletter renders correctly in Gmail, Outlook, Apple Mail
 - [ ] Links work
@@ -693,16 +773,19 @@ Build Streamlit or web dashboard for assembling newsletters with live preview an
 ## Success Metrics (First 3 Issues)
 
 ### Pipeline Health
+
 - Scraper uptime: >95%
 - Data collection lag: <24 hours
 - Metrics computation: <5 minutes per run
 
 ### Content Quality
+
 - Newsletter production time: <2 hours per issue
 - Fact accuracy: 100% (no wrong numbers)
 - Typos/errors: 0 per issue
 
 ### Subscriber Engagement (if tracking)
+
 - Open rate: >30%
 - Reply rate: >2%
 

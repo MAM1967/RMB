@@ -1,0 +1,35 @@
+name: Generate Brief
+
+on:
+  schedule:
+    # Weekly on Monday at 12:00 UTC (adjust as needed)
+    - cron: "0 12 * * 1"
+  workflow_dispatch:
+
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Generate brief and facts packet
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          python scripts/generate_brief.py
+
+      - name: Upload brief artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: brief-and-facts
+          path: |
+            briefs/
+            facts/
