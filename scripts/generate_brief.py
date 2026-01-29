@@ -355,10 +355,6 @@ def render_brief(
             lines.append(f"- **{name}** – {count} senior {func} roles")
         lines.append("")
 
-    # Section: Why searches stall (complex / high-scope roles)
-    lines.append("### Why Searches Stall")
-    lines.append("")
-
     # Section: Market Reset / New Talent Supply (layoffs)
     # Only show if we have meaningful data quality (employees_affected or function_tags)
     layoffs = layoffs or []
@@ -424,11 +420,42 @@ def render_brief(
                 )
             lines.append("")
     # If data quality is insufficient, silently skip the section (don't show placeholder text)
+    lines.append("### Why Searches Stall")
+    lines.append("")
     lines.append(
-        "Below are high-scope senior roles based on title language "
-        "(strategy, execution, cross-functional work, leadership). "
-        "These often correlate with slower, more fragile searches."
+        "High-scope roles (those requiring strategy, execution, cross-functional impact, "
+        "and leadership) often correlate with slower, more fragile searches. "
+        "Below are roles with elevated scope scores based on title language analysis."
     )
+    lines.append("")
+    lines.append("#### Understanding the Scope Index")
+    lines.append("")
+    lines.append(
+        "**Scope Index = Strategy + Execution + Cross-Functional Impact + Leadership + People Management**"
+    )
+    lines.append("")
+    lines.append("**What the scores mean:**")
+    lines.append("")
+    lines.append("- **Low (1-2)**: Focused roles with clear, well-defined responsibilities. Typically faster to fill.")
+    lines.append("- **Medium (3-5)**: Roles with moderate complexity requiring strategic thinking, execution ownership, or cross-functional collaboration. Moderate search difficulty.")
+    lines.append("- **High (6+)**: Highly complex roles combining multiple dimensions (strategy + execution + cross-functional work + leadership). These searches often stall due to:")
+    lines.append("  - Difficulty defining the ideal candidate profile")
+    lines.append("  - Need for stakeholder alignment across multiple teams")
+    lines.append("  - Smaller pool of candidates with the right combination of skills")
+    lines.append("  - Higher risk of mis-hires leading to more cautious hiring")
+    lines.append("")
+    lines.append("**How points are tabulated:**")
+    lines.append("")
+    lines.append("We scan job titles for keywords that indicate scope complexity:")
+    lines.append("")
+    lines.append("- **Strategy** (+1 per keyword): strategy, strategic, roadmap, portfolio, transformation, vision")
+    lines.append("- **Execution** (+1 per keyword): execute, execution, deliver, delivery, own, owning, pipeline, quota, okrs")
+    lines.append("- **Cross-Functional Impact** (+1 per keyword): cross functional, cross-functional, partner, partnership, collaborate, collaboration")
+    lines.append("- **Leadership** (+1 per keyword): lead, leader, leadership, head of, director, vp, svp, chief")
+    lines.append("- **People Management** (+1 if present): manage team, managing team, people manager, people leadership, build a team, grow a team")
+    lines.append("")
+    lines.append("Each keyword match adds 1 point to that dimension. The total scope index is the sum of all dimensions. "
+                 "Multiple keywords in the same dimension stack (e.g., \"Strategic Product Leader\" = Strategy: 1, Leadership: 1, Total: 2).")
     lines.append("")
 
     # Compute a crude "scope inflation" index from the in-memory features.
