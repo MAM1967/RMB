@@ -360,15 +360,20 @@ def render_brief(
     lines.append("")
 
     # Section: Market Reset / New Talent Supply (layoffs)
+    # Only show if we have meaningful data quality (employees_affected or function_tags)
     layoffs = layoffs or []
-    lines.append("### Market Reset / New Talent Supply")
-    lines.append("")
-    if not layoffs:
-        lines.append(
-            "_No recent layoff events ingested yet. Add layoff_events via "
-            "`scripts/ingest_layoffs.py` to populate this section._"
-        )
-    else:
+    has_usable_layoff_data = False
+    if layoffs:
+        # Check if we have meaningful data: at least some entries with employees_affected
+        # OR function_tags populated
+        total_with_employees = sum(1 for ev in layoffs if ev.employees_affected and ev.employees_affected > 0)
+        total_with_functions = sum(1 for ev in layoffs if ev.function_tags)
+        # Require at least 3 entries with usable data to show the section
+        has_usable_layoff_data = (total_with_employees >= 3) or (total_with_functions >= 3)
+    
+    if has_usable_layoff_data:
+        lines.append("### Market Reset / New Talent Supply")
+        lines.append("")
         # Aggregate by company, sum employees_affected
         by_company: dict[str, dict[str, Any]] = {}
         for ev in layoffs:
@@ -391,27 +396,34 @@ def render_brief(
             for tag in ev.function_tags:
                 bucket["functions"].add(tag)
 
-        # Rank by employees affected desc
+        # Rank by employees affected desc, but filter to only show entries with usable data
         ranked = sorted(
             by_company.values(),
             key=lambda b: b["employees"],
             reverse=True,
-        )[:10]
-
-        lines.append(
-            "Recent layoff events that may have released senior talent "
-            "in relevant functions (coarse, aggregated view):"
         )
-        lines.append("")
-        lines.append("| Company | Approx. affected | Events | Functions (coarse) | Latest event |")
-        lines.append("|---------|------------------|--------|---------------------|--------------|")
-        for b in ranked:
-            funcs = ", ".join(sorted(b["functions"])) or "-"
-            latest = b["latest"].isoformat()
+        # Only show companies that have either employees_affected OR function_tags
+        filtered_ranked = [
+            b for b in ranked
+            if b["employees"] > 0 or b["functions"]
+        ][:10]
+
+        if filtered_ranked:
             lines.append(
-                f"| {b['name']} | {b['employees'] or '-'} | {b['events']} | {funcs} | {latest} |"
+                "Recent layoff events that may have released senior talent "
+                "in relevant functions (coarse, aggregated view):"
             )
-    lines.append("")
+            lines.append("")
+            lines.append("| Company | Approx. affected | Events | Functions (coarse) | Latest event |")
+            lines.append("|---------|------------------|--------|---------------------|--------------|")
+            for b in filtered_ranked:
+                funcs = ", ".join(sorted(b["functions"])) or "-"
+                latest = b["latest"].isoformat()
+                lines.append(
+                    f"| {b['name']} | {b['employees'] or '-'} | {b['events']} | {funcs} | {latest} |"
+                )
+            lines.append("")
+    # If data quality is insufficient, silently skip the section (don't show placeholder text)
     lines.append(
         "Below are high-scope senior roles based on title language "
         "(strategy, execution, cross-functional work, leadership). "
